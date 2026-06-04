@@ -5,11 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Для Макосям ❤️</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             margin: 0;
@@ -18,177 +14,181 @@
             justify-content: center;
             align-items: center;
             background: linear-gradient(135deg, #ffe5ec 0%, #ffc2d1 100%);
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow: hidden;
             position: relative;
         }
 
-        /* Контейнер для интерактивных элементов */
         .card {
             text-align: center;
             z-index: 10;
-            background: rgba(255, 255, 255, 0.85);
-            padding: 40px 30px;
-            border-radius: 24px;
-            box-shadow: 0 10px 30px rgba(251, 111, 146, 0.3);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(251, 111, 146, 0.3);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
             max-width: 90%;
-            width: 400px;
-            transition: all 0.5s ease;
+            width: 450px;
+            transition: all 0.6s ease;
         }
 
-        /* Стили начальной кнопки */
         .magic-btn {
             background: linear-gradient(45deg, #ff477e, #ff7096);
             color: white;
             border: none;
-            padding: 18px 36px;
-            font-size: 1.2rem;
+            padding: 20px 40px;
+            font-size: 1.3rem;
             font-weight: bold;
             border-radius: 50px;
             cursor: pointer;
             box-shadow: 0 5px 15px rgba(255, 71, 126, 0.4);
-            transition: transform 0.2s, box-shadow 0.2s;
-            outline: none;
+            transition: 0.3s;
         }
 
-        .magic-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(255, 71, 126, 0.6);
-        }
+        .magic-btn:hover { transform: scale(1.05); }
 
-        .magic-btn:active {
-            transform: scale(0.98);
-        }
-
-        /* Скрытый по умолчанию блок с признанием */
         .love-message {
             display: none;
             opacity: 0;
-            transform: scale(0.8);
-            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .love-message.show {
             display: block;
             opacity: 1;
-            transform: scale(1);
+            animation: fadeIn 1s ease-out;
         }
 
-        h1 {
+        h1 { color: #ff477e; margin-bottom: 20px; font-size: 1.8rem; }
+
+        /* Стили счетчика */
+        .timer-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .timer-item {
+            background: #fff0f3;
+            padding: 10px 5px;
+            border-radius: 12px;
+            border: 1px solid #ffc2d1;
+        }
+
+        .timer-value {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: bold;
             color: #ff477e;
-            font-size: 2.2rem;
-            margin-bottom: 15px;
-            line-height: 1.3;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
         }
 
-        p {
-            color: #4a4a4a;
-            font-size: 1.1rem;
-            line-height: 1.6;
+        .timer-label {
+            font-size: 0.7rem;
+            color: #7a7a7a;
+            text-transform: uppercase;
         }
 
         .heart-icon {
-            font-size: 3.5rem;
-            color: #ff477e;
+            font-size: 3rem;
             animation: heartbeat 1.2s infinite;
-            margin-bottom: 10px;
         }
 
         @keyframes heartbeat {
-            0% { transform: scale(1); }
-            20% { transform: scale(1.15); }
-            40% { transform: scale(1); }
-            60% { transform: scale(1.15); }
-            100% { transform: scale(1); }
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
         }
 
-        /* Анимация падающих сердечек */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .falling-heart {
             position: absolute;
-            color: #ff7096;
-            font-size: 20px;
             pointer-events: none;
             z-index: 1;
             animation: fall linear forwards;
         }
 
         @keyframes fall {
-            0% {
-                transform: translateY(-20px) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(105vh) rotate(360deg);
-                opacity: 0;
-            }
+            0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
         }
     </style>
 </head>
 <body>
 
-    <div class="card" id="mainCard">
-        <!-- Кнопка, которая видна сразу -->
+    <div class="card">
         <button class="magic-btn" id="startBtn" onclick="revealLove()">Нажми на меня ✨</button>
 
-        <!-- Блок, который появится после клика -->
         <div class="love-message" id="loveMessage">
             <div class="heart-icon">❤️</div>
-            <h1>Я люблю тебя, Макосям!</h1>
-            <p>Ты самое дорогое, что у меня есть. Спасибо, что ты рядом! ✨</p>
+            <h1>Мы вместе уже:</h1>
+            
+            <div class="timer-container">
+                <div class="timer-item">
+                    <span class="timer-value" id="days">0</span>
+                    <span class="timer-label">Дней</span>
+                </div>
+                <div class="timer-item">
+                    <span class="timer-value" id="hours">0</span>
+                    <span class="timer-label">Часов</span>
+                </div>
+                <div class="timer-item">
+                    <span class="timer-value" id="minutes">0</span>
+                    <span class="timer-label">Минут</span>
+                </div>
+                <div class="timer-item">
+                    <span class="timer-value" id="seconds">0</span>
+                    <span class="timer-label">Секунд</span>
+                </div>
+            </div>
+
+            <p style="margin-top: 25px; color: #4a4a4a; font-weight: 500;">
+                Я люблю тебя, сердешкам! ❤️
+            </p>
         </div>
     </div>
 
     <script>
+        // УКАЖИ ТУТ ВАШУ ДАТУ (Год, Месяц (от 0 до 11), День, Час, Минута)
+        // Январь - 0, Февраль - 1 ... Декабрь - 11
+        const startDate = new Date(2026, 0, 2, 2, 2); // Сейчас стоит 1 января 2024
+
+        function updateTimer() {
+            const now = new Date();
+            const diff = now - startDate;
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((diff / 1000 / 60) % 60);
+            const seconds = Math.floor((diff / 1000) % 60);
+
+            document.getElementById('days').innerText = days;
+            document.getElementById('hours').innerText = hours;
+            document.getElementById('minutes').innerText = minutes;
+            document.getElementById('seconds').innerText = seconds;
+        }
+
         function revealLove() {
-            const startBtn = document.getElementById('startBtn');
-            const loveMessage = document.getElementById('loveMessage');
+            document.getElementById('startBtn').style.display = 'none';
+            document.getElementById('loveMessage').classList.add('show');
             
-            // Скрываем кнопку
-            startBtn.style.display = 'none';
-            
-            // Показываем блок с признанием и запускаем анимацию
-            loveMessage.classList.add('show');
-            
-            // Запускаем бесконечный дождь из сердечек
+            setInterval(updateTimer, 1000);
+            updateTimer();
             setInterval(createHeart, 300);
-            
-            // Сразу создаем пачку сердечек для взрывного эффекта
-            for(let i = 0; i < 15; i++) {
-                setTimeout(createHeart, i * 50);
-            }
         }
 
         function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('falling-heart');
-            
-            // Разные виды сердечек
-            const heartTypes = ['❤️', '💖', '💝', '💕', '💗'];
-            heart.innerText = heartTypes[Math.floor(Math.random() * heartTypes.length)];
-            
-            // Случайная позиция по горизонтали
+            heart.innerText = ['❤️', '💖', '💕', '🌸'][Math.floor(Math.random() * 4)];
             heart.style.left = Math.random() * 100 + 'vw';
-            
-            // Случайный размер
-            const size = Math.random() * 20 + 15;
-            heart.style.fontSize = size + 'px';
-            
-            // Случайная скорость падения
+            heart.style.fontSize = Math.random() * 20 + 15 + 'px';
             const duration = Math.random() * 3 + 2;
             heart.style.animationDuration = duration + 's';
-            
-            // Немного разная прозрачность
-            heart.style.opacity = Math.random() * 0.5 + 0.5;
-            
             document.body.appendChild(heart);
-            
-            // Удаляем сердечко после того, как оно упало, чтобы не перегружать память
-            setTimeout(() => {
-                heart.remove();
-            }, duration * 1000);
+            setTimeout(() => heart.remove(), duration * 1000);
         }
     </script>
 </body>
