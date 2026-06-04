@@ -51,7 +51,7 @@
             line-height: 1.4;
         }
 
-        /* Контейнер для кнопок, чтобы они не ломали верстку */
+        /* Контейнер для кнопок */
         .btn-container {
             display: flex;
             justify-content: center;
@@ -92,7 +92,7 @@
             user-select: none;
         }
 
-        /* Экран с результатом и счетчиком */
+        /* Экран со счетчиком и печатью текста */
         .love-screen {
             display: none;
             opacity: 0;
@@ -119,7 +119,7 @@
             margin-bottom: 20px;
         }
 
-        /* Стили сетки счетчика */
+        /* Стили счетчика */
         .timer-container {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -132,7 +132,6 @@
             padding: 12px 5px;
             border-radius: 14px;
             border: 1px solid #ffc2d1;
-            box-shadow: inset 0 2px 5px rgba(255,255,255,0.8);
         }
 
         .timer-value {
@@ -149,11 +148,28 @@
             letter-spacing: 0.5px;
         }
 
-        .love-text {
+        /* Контейнер для эффекта печатающегося текста */
+        .typewriter-container {
             color: #4a4a4a;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             font-weight: 500;
-            line-height: 1.5;
+            line-height: 1.6;
+            min-height: 80px; /* Чтобы карточка не прыгала по высоте во время печати */
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        /* Каретка (мигающий курсор) */
+        .cursor {
+            display: inline-block;
+            width: 2px;
+            background-color: #ff477e;
+            margin-left: 2px;
+            animation: blink 0.8s infinite;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
         }
 
         @keyframes heartbeat {
@@ -161,7 +177,6 @@
             50% { transform: scale(1.1); }
         }
 
-        /* Сердечки на фоне */
         .falling-heart {
             position: absolute;
             pointer-events: none;
@@ -187,7 +202,7 @@
             </div>
         </div>
 
-        <!-- ЭКРАН 2: СЧЕТЧИК И ПРИЗНАНИЕ -->
+        <!-- ЭКРАН 2: СЧЕТЧИК И ЭФФЕКТ ПЕЧАТИ -->
         <div class="love-screen" id="loveScreen">
             <div class="heart-icon">❤️</div>
             <h1>Мы вместе уже:</h1>
@@ -211,35 +226,34 @@
                 </div>
             </div>
 
-            <p class="love-text">
-                Я люблю тебя, Макосям! Ты самое дорогое, что у меня есть! ✨
-            </p>
+            <!-- Сюда скрипт будет по букве выводить твой текст -->
+            <div class="typewriter-container">
+                <span id="textTarget"></span><span class="cursor" id="textCursor">|</span>
+            </div>
         </div>
     </div>
 
     <script>
-        // Дата начала отношений: 22 февраля 2026 (в JS месяцы с 0, поэтому февраль — это 1)
+        // Дата начала отношений: 22 февраля 2026 (февраль — это 1)
         const startDate = new Date(2026, 1, 22, 0, 0, 0);
 
-        // Функция для убегания кнопки "Нет"
+        // Твой текст для эффекта печатной машинки
+        const messageText = "Иногда я могу не говорить это каждый день, но я правда ценю тебя и то, что ты есть в моей жизни. Просто хотел, чтобы ты это знала и не забывала. ❤️";
+
         function moveButton() {
             const noBtn = document.getElementById('noBtn');
             const card = document.getElementById('mainCard');
             
-            // Получаем размеры карточки, чтобы кнопка не убегала за её пределы слишком сильно
             const cardWidth = card.clientWidth;
             const cardHeight = card.clientHeight;
             
-            // Генерируем случайные координаты внутри карточки с небольшим отступом
             const randomX = Math.floor(Math.random() * (cardWidth - noBtn.clientWidth - 40)) + 20;
             const randomY = Math.floor(Math.random() * (cardHeight - noBtn.clientHeight - 40)) + 20;
             
-            // Смещаем кнопку относительно левого верхнего угла карточки
             noBtn.style.left = randomX + 'px';
             noBtn.style.top = randomY + 'px';
         }
 
-        // Функция подсчета времени
         function updateTimer() {
             const now = new Date();
             const diff = now - startDate;
@@ -255,27 +269,40 @@
             document.getElementById('seconds').innerText = seconds;
         }
 
-        // Переключение экранов при клике на "ДА"
+        function typeWriter(text, i, targetId, callback) {
+            if (i < text.length) {
+                document.getElementById(targetId).innerHTML += text.charAt(i);
+                setTimeout(function() {
+                    typeWriter(text, i + 1, targetId, callback);
+                }, 50); // Скорость печати (50 мс на одну букву)
+            } else if (callback) {
+                callback();
+            }
+        }
+
         function revealLove() {
             document.getElementById('gameScreen').style.display = 'none';
             
             const loveScreen = document.getElementById('loveScreen');
             loveScreen.classList.add('show');
             
-            // Запускаем счетчик
             setInterval(updateTimer, 1000);
             updateTimer();
             
-            // Запускаем бесконечные сердечки
             setInterval(createHeart, 300);
-            
-            // Эффект взрыва сердечек в начале
             for(let i = 0; i < 15; i++) {
                 setTimeout(createHeart, i * 40);
             }
+
+            // Запуск эффекта печати текста через полсекунды после открытия экрана
+            setTimeout(function() {
+                typeWriter(messageText, 0, 'textTarget', function() {
+                    // Когда текст полностью напечатается, скрываем мигающую палочку-курсор
+                    document.getElementById('textCursor').style.display = 'none';
+                });
+            }, 600);
         }
 
-        // Создание падающих сердечек
         function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('falling-heart');
@@ -298,11 +325,10 @@
             }, duration * 1000);
         }
 
-        // Инициализация кнопки "Нет" в нормальной начальной позиции справа от "Да"
         window.onload = function() {
             const noBtn = document.getElementById('noBtn');
             noBtn.style.right = '40px';
-            noBtn.style.top = '138px'; // Примерное выравнивание по центру контейнера
+            noBtn.style.top = '138px';
         }
     </script>
 </body>
