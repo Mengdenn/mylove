@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Для Макосям ❤️</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
         body {
             margin: 0;
@@ -14,83 +18,142 @@
             justify-content: center;
             align-items: center;
             background: linear-gradient(135deg, #ffe5ec 0%, #ffc2d1 100%);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             overflow: hidden;
             position: relative;
         }
 
+        /* Главная карточка */
         .card {
             text-align: center;
             z-index: 10;
             background: rgba(255, 255, 255, 0.9);
-            padding: 30px;
+            padding: 35px 25px;
             border-radius: 30px;
             box-shadow: 0 15px 35px rgba(251, 111, 146, 0.3);
             backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
             max-width: 90%;
-            width: 450px;
-            transition: all 0.6s ease;
+            width: 440px;
+            transition: all 0.5s ease;
+            position: relative;
         }
 
-        .magic-btn {
-            background: linear-gradient(45deg, #ff477e, #ff7096);
-            color: white;
-            border: none;
-            padding: 20px 40px;
-            font-size: 1.3rem;
+        /* Экран игры */
+        .game-screen {
+            display: block;
+        }
+
+        .game-title {
+            color: #ff477e;
+            font-size: 1.6rem;
+            margin-bottom: 40px;
+            line-height: 1.4;
+        }
+
+        /* Контейнер для кнопок, чтобы они не ломали верстку */
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            height: 60px;
+            position: relative;
+        }
+
+        .btn {
+            padding: 14px 30px;
+            font-size: 1.1rem;
             font-weight: bold;
             border-radius: 50px;
             cursor: pointer;
-            box-shadow: 0 5px 15px rgba(255, 71, 126, 0.4);
-            transition: 0.3s;
+            border: none;
+            outline: none;
+            transition: transform 0.2s;
         }
 
-        .magic-btn:hover { transform: scale(1.05); }
+        .btn-yes {
+            background: linear-gradient(45deg, #ff477e, #ff7096);
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 71, 126, 0.4);
+        }
 
-        .love-message {
+        .btn-yes:hover {
+            transform: scale(1.1);
+        }
+
+        /* Убегающая кнопка */
+        .btn-no {
+            background-color: #f0f0f0;
+            color: #666;
+            position: absolute;
+            transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            user-select: none;
+        }
+
+        /* Экран с результатом и счетчиком */
+        .love-screen {
             display: none;
             opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .love-message.show {
+        .love-screen.show {
             display: block;
             opacity: 1;
-            animation: fadeIn 1s ease-out;
+            transform: scale(1);
         }
 
-        h1 { color: #ff477e; margin-bottom: 20px; font-size: 1.8rem; }
+        .heart-icon {
+            font-size: 3.5rem;
+            color: #ff477e;
+            animation: heartbeat 1.2s infinite;
+            margin-bottom: 10px;
+        }
 
-        /* Стили счетчика */
+        h1 {
+            color: #ff477e;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+
+        /* Стили сетки счетчика */
         .timer-container {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 10px;
-            margin-top: 20px;
+            margin: 25px 0;
         }
 
         .timer-item {
             background: #fff0f3;
-            padding: 10px 5px;
-            border-radius: 12px;
+            padding: 12px 5px;
+            border-radius: 14px;
             border: 1px solid #ffc2d1;
+            box-shadow: inset 0 2px 5px rgba(255,255,255,0.8);
         }
 
         .timer-value {
             display: block;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: bold;
             color: #ff477e;
         }
 
         .timer-label {
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             color: #7a7a7a;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .heart-icon {
-            font-size: 3rem;
-            animation: heartbeat 1.2s infinite;
+        .love-text {
+            color: #4a4a4a;
+            font-size: 1.1rem;
+            font-weight: 500;
+            line-height: 1.5;
         }
 
         @keyframes heartbeat {
@@ -98,11 +161,7 @@
             50% { transform: scale(1.1); }
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
+        /* Сердечки на фоне */
         .falling-heart {
             position: absolute;
             pointer-events: none;
@@ -118,10 +177,18 @@
 </head>
 <body>
 
-    <div class="card">
-        <button class="magic-btn" id="startBtn" onclick="revealLove()">Нажми на меня журегм ✨</button>
+    <div class="card" id="mainCard">
+        <!-- ЭКРАН 1: ИНТЕРАКТИВНАЯ ИГРА -->
+        <div class="game-screen" id="gameScreen">
+            <h2 class="game-title">Макосям, ты меня любишь? 🥺</h2>
+            <div class="btn-container" id="btnContainer">
+                <button class="btn btn-yes" onclick="revealLove()">ДА! ❤️</button>
+                <button class="btn btn-no" id="noBtn" onmouseover="moveButton()" onclick="moveButton()">Нет 😢</button>
+            </div>
+        </div>
 
-        <div class="love-message" id="loveMessage">
+        <!-- ЭКРАН 2: СЧЕТЧИК И ПРИЗНАНИЕ -->
+        <div class="love-screen" id="loveScreen">
             <div class="heart-icon">❤️</div>
             <h1>Мы вместе уже:</h1>
             
@@ -144,17 +211,35 @@
                 </div>
             </div>
 
-            <p style="margin-top: 25px; color: #4a4a4a; font-weight: 500;">
-                Я люблю тебя, сердешкам! ❤️
+            <p class="love-text">
+                Я люблю тебя, Макосям! Ты самое дорогое, что у меня есть! ✨
             </p>
         </div>
     </div>
 
     <script>
-        // УКАЖИ ТУТ ВАШУ ДАТУ (Год, Месяц (от 0 до 11), День, Час, Минута)
-        // Январь - 0, Февраль - 1 ... Декабрь - 11
-        const startDate = new Date(2026, 2, 22, 19, 30); // Сейчас стоит 1 января 2024
+        // Дата начала отношений: 22 февраля 2026 (в JS месяцы с 0, поэтому февраль — это 1)
+        const startDate = new Date(2026, 1, 22, 0, 0, 0);
 
+        // Функция для убегания кнопки "Нет"
+        function moveButton() {
+            const noBtn = document.getElementById('noBtn');
+            const card = document.getElementById('mainCard');
+            
+            // Получаем размеры карточки, чтобы кнопка не убегала за её пределы слишком сильно
+            const cardWidth = card.clientWidth;
+            const cardHeight = card.clientHeight;
+            
+            // Генерируем случайные координаты внутри карточки с небольшим отступом
+            const randomX = Math.floor(Math.random() * (cardWidth - noBtn.clientWidth - 40)) + 20;
+            const randomY = Math.floor(Math.random() * (cardHeight - noBtn.clientHeight - 40)) + 20;
+            
+            // Смещаем кнопку относительно левого верхнего угла карточки
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+        }
+
+        // Функция подсчета времени
         function updateTimer() {
             const now = new Date();
             const diff = now - startDate;
@@ -170,25 +255,54 @@
             document.getElementById('seconds').innerText = seconds;
         }
 
+        // Переключение экранов при клике на "ДА"
         function revealLove() {
-            document.getElementById('startBtn').style.display = 'none';
-            document.getElementById('loveMessage').classList.add('show');
+            document.getElementById('gameScreen').style.display = 'none';
             
+            const loveScreen = document.getElementById('loveScreen');
+            loveScreen.classList.add('show');
+            
+            // Запускаем счетчик
             setInterval(updateTimer, 1000);
             updateTimer();
+            
+            // Запускаем бесконечные сердечки
             setInterval(createHeart, 300);
+            
+            // Эффект взрыва сердечек в начале
+            for(let i = 0; i < 15; i++) {
+                setTimeout(createHeart, i * 40);
+            }
         }
 
+        // Создание падающих сердечек
         function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('falling-heart');
-            heart.innerText = ['❤️', '💖', '💕', '🌸'][Math.floor(Math.random() * 4)];
+            
+            const heartTypes = ['❤️', '💖', '💝', '💕', '💗'];
+            heart.innerText = heartTypes[Math.floor(Math.random() * heartTypes.length)];
+            
             heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.fontSize = Math.random() * 20 + 15 + 'px';
+            const size = Math.random() * 20 + 15;
+            heart.style.fontSize = size + 'px';
+            
             const duration = Math.random() * 3 + 2;
             heart.style.animationDuration = duration + 's';
+            heart.style.opacity = Math.random() * 0.4 + 0.6;
+            
             document.body.appendChild(heart);
-            setTimeout(() => heart.remove(), duration * 1000);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, duration * 1000);
+        }
+
+        // Инициализация кнопки "Нет" в нормальной начальной позиции справа от "Да"
+        window.onload = function() {
+            const noBtn = document.getElementById('noBtn');
+            noBtn.style.right = '40px';
+            noBtn.style.top = '138px'; // Примерное выравнивание по центру контейнера
         }
     </script>
 </body>
