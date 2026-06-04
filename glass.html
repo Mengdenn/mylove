@@ -3,71 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Для Макосям ❤️ (Glass Edition)</title>
+    <title>Для Макосям ❤️ (Light Glass Edition)</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         
         body {
             margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center;
-            background: #0f0c1b; /* Глубокий темный фон для контраста со светящимся стеклом */
+            background: linear-gradient(135deg, #ffe5ec 0%, #ffc2d1 100%); /* Твой любимый розоватый градиент */
             font-family: 'Segoe UI', Roboto, sans-serif; overflow: hidden; position: relative;
             cursor: pointer;
         }
 
-        /* Динамический живой фон (Плавающие неоновые шары) */
+        /* Светлые плавающие зефирные шары на фоне */
         .background-glow {
             position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 1; overflow: hidden;
         }
         .blob {
-            position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.6; animation: float 12s infinite alternate ease-in-out;
+            position: absolute; border-radius: 50%; filter: blur(50px); opacity: 0.7; animation: float 12s infinite alternate ease-in-out;
         }
-        .blob1 { width: 300px; height: 300px; background: #ff477e; top: -10%; left: 10%; animation-duration: 14s; }
-        .blob2 { width: 400px; height: 400px; background: #ff7096; bottom: -10%; right: 5%; animation-duration: 18s; }
-        .blob3 { width: 250px; height: 250px; background: #f72585; top: 40%; left: 70%; animation-duration: 12s; }
+        .blob1 { width: 320px; height: 320px; background: #fff0f3; top: -5%; left: 15%; animation-duration: 14s; }
+        .blob2 { width: 380px; height: 380px; background: #ffb3c6; bottom: -5%; right: 10%; animation-duration: 16s; }
+        .blob3 { width: 260px; height: 260px; background: #ff85a2; top: 35%; left: 65%; animation-duration: 11s; }
 
         @keyframes float {
             0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(60px, 40px) scale(1.15); }
+            100% { transform: translate(50px, 30px) scale(1.1); }
         }
 
-        /* Эффект матового стекла (Glassmorphic Card) */
+        /* Эффект светлого матового стекла */
         .card {
             text-align: center; z-index: 10; 
-            background: rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(25px) saturate(160%);
-            -webkit-backdrop-filter: blur(25px) saturate(160%);
-            border: 1px solid rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.45); /* Более прозрачное и светлое стекло */
+            backdrop-filter: blur(20px) saturate(140%);
+            -webkit-backdrop-filter: blur(20px) saturate(140%);
+            border: 1px solid rgba(255, 255, 255, 0.5);
             padding: 45px 25px; border-radius: 30px; 
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3), inset 0 0 20px rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 45px rgba(251, 111, 146, 0.25), inset 0 0 15px rgba(255, 255, 255, 0.3);
             width: 440px; max-width: 90%; min-height: 400px;
             display: flex; flex-direction: column; justify-content: center; position: relative;
-            cursor: default; transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: default; transition: transform 0.3s, box-shadow 0.3s;
         }
         .card:hover {
-            box-shadow: 0 25px 60px rgba(255, 71, 126, 0.2), inset 0 0 25px rgba(255, 255, 255, 0.15);
+            box-shadow: 0 25px 50px rgba(251, 111, 146, 0.35), inset 0 0 20px rgba(255, 255, 255, 0.4);
         }
 
         .game-screen, .love-screen { width: 100%; }
-        .game-title { color: #fff; font-size: 1.9rem; margin-bottom: 40px; text-shadow: 0 2px 10px rgba(255,71,126,0.3); }
+        .game-title { color: #ff477e; font-size: 1.85rem; margin-bottom: 40px; font-weight: bold; }
         
-        /* Кнопки со свечением */
+        /* Кнопки */
         .btn-container {
             display: flex; justify-content: space-around; align-items: center; 
             min-height: 120px; position: relative; width: 100%;
         }
         .btn {
             padding: 16px 38px; font-size: 1.2rem; font-weight: bold;
-            border-radius: 50px; cursor: pointer; border: none; outline: none; box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            border-radius: 50px; cursor: pointer; border: none; outline: none; box-shadow: 0 6px 15px rgba(0,0,0,0.08);
         }
         .btn-yes { 
             background: linear-gradient(45deg, #ff477e, #ff7096); color: white; 
-            box-shadow: 0 5px 25px rgba(255, 71, 126, 0.6); transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 5px 20px rgba(255, 71, 126, 0.4); transition: transform 0.2s, box-shadow 0.2s;
         }
-        .btn-yes:hover { transform: scale(1.08); box-shadow: 0 5px 30px rgba(255, 71, 126, 0.8); }
+        .btn-yes:hover { transform: scale(1.08); box-shadow: 0 5px 25px rgba(255, 71, 126, 0.6); }
         
         .btn-no { 
-            background: rgba(255, 255, 255, 0.2); color: #fff; border: 1px solid rgba(255,255,255,0.2);
-            backdrop-filter: blur(5px);
+            background: rgba(255, 255, 255, 0.6); color: #ff7096; border: 1px solid rgba(255, 255, 255, 0.7);
             transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1); user-select: none;
         }
 
@@ -75,23 +74,23 @@
         .love-screen { display: none; opacity: 0; }
         .love-screen.show { display: block; opacity: 1; animation: fadeIn 0.8s ease-out; }
         
-        /* Стеклянные плашки таймера */
+        /* Розоватые стеклянные плашки таймера */
         .timer-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 25px 0; }
         .timer-item { 
-            background: rgba(255, 255, 255, 0.07); padding: 12px 5px; border-radius: 14px; 
-            border: 1px solid rgba(255, 255, 255, 0.15); box-shadow: inset 0 0 10px rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.5); padding: 12px 5px; border-radius: 14px; 
+            border: 1px solid rgba(255, 255, 255, 0.6); box-shadow: 0 4px 10px rgba(251, 111, 146, 0.05);
         }
-        .timer-value { display: block; font-size: 1.6rem; font-weight: bold; color: #ff477e; text-shadow: 0 0 10px rgba(255,71,126,0.3); }
-        .timer-label { font-size: 0.75rem; color: #ccc; }
+        .timer-value { display: block; font-size: 1.6rem; font-weight: bold; color: #ff477e; }
+        .timer-label { font-size: 0.75rem; color: #7a7a7a; font-weight: 500; }
 
-        .typewriter-container { color: #f0f0f0; font-size: 1.05rem; line-height: 1.6; margin-top: 15px; min-height: 80px; text-shadow: 0 1px 4px rgba(0,0,0,0.2); }
+        .typewriter-container { color: #4a4a4a; font-size: 1.05rem; line-height: 1.6; margin-top: 15px; min-height: 80px; font-weight: 500; }
         
         .kiss-btn { 
             display: none; margin: 25px auto 0; background: linear-gradient(45deg, #ff7096, #ff85a2); color: white; 
             padding: 15px 30px; border-radius: 50px; border: none; cursor: pointer; font-size: 1.05rem; font-weight: bold;
-            box-shadow: 0 5px 20px rgba(255, 112, 150, 0.4);
+            box-shadow: 0 5px 15px rgba(255, 112, 150, 0.3);
         }
-        .kiss-btn.success { background: #4fca5d !important; box-shadow: 0 5px 20px rgba(79, 202, 93, 0.5); cursor: default; }
+        .kiss-btn.success { background: #4fca5d !important; box-shadow: 0 5px 15px rgba(79, 202, 93, 0.4); cursor: default; }
         
         @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
         .falling-heart { position: absolute; pointer-events: none; z-index: 1; animation: fall linear forwards; }
@@ -101,14 +100,14 @@
 </head>
 <body onclick="spawnHearts(event)">
 
-    <!-- Живой фон -->
+    <!-- Нежный живой фон -->
     <div class="background-glow">
         <div class="blob blob1"></div>
         <div class="blob blob2"></div>
         <div class="blob blob3"></div>
     </div>
 
-    <!-- Основная карточка -->
+    <!-- Матовая карточка -->
     <div class="card" id="mainCard" onclick="event.stopPropagation()">
         <!-- ЭКРАН 1: ИГРА -->
         <div class="game-screen" id="gameScreen">
@@ -121,8 +120,8 @@
 
         <!-- ЭКРАН 2: ТАЙМЕР И СЛОВА -->
         <div class="love-screen" id="loveScreen">
-            <div style="font-size: 3.2rem; color: #ff477e; text-shadow: 0 0 15px rgba(255,71,126,0.5); margin-bottom: 10px;">❤️</div>
-            <h1 style="color: #fff; font-size: 1.8rem; margin-bottom: 5px;">Мы вместе уже:</h1>
+            <div style="font-size: 3.2rem; color: #ff477e; margin-bottom: 10px;">❤️</div>
+            <h1 style="color: #ff477e; font-size: 1.8rem; margin-bottom: 5px;">Мы вместе уже:</h1>
             <div class="timer-container">
                 <div class="timer-item"><span class="timer-value" id="d">0</span><span class="timer-label">Дней</span></div>
                 <div class="timer-item"><span class="timer-value" id="h">0</span><span class="timer-label">Часов</span></div>
