@@ -10,50 +10,67 @@
             margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center;
             background: linear-gradient(135deg, #ffe5ec 0%, #ffc2d1 100%);
             font-family: 'Segoe UI', Roboto, sans-serif; overflow: hidden; position: relative;
+            cursor: pointer;
         }
         .card {
             text-align: center; z-index: 10; background: rgba(255, 255, 255, 0.9);
-            padding: 40px 20px; border-radius: 30px; box-shadow: 0 15px 35px rgba(251, 111, 146, 0.3);
-            backdrop-filter: blur(10px); width: 440px; max-width: 90%; min-height: 350px;
+            padding: 40px 25px; border-radius: 30px; box-shadow: 0 15px 35px rgba(251, 111, 146, 0.3);
+            backdrop-filter: blur(10px); width: 440px; max-width: 90%; min-height: 380px;
             display: flex; flex-direction: column; justify-content: center; position: relative;
+            cursor: default;
         }
         .game-screen, .love-screen { width: 100%; }
         .game-title { color: #ff477e; font-size: 1.8rem; margin-bottom: 40px; }
         
-        /* Исправленный контейнер кнопок */
+        /* Стабильный контейнер кнопок */
         .btn-container {
-            display: flex; justify-content: center; align-items: center; 
-            gap: 20px; min-height: 100px; position: relative;
+            display: flex; justify-content: space-around; align-items: center; 
+            min-height: 120px; position: relative; width: 100%;
         }
         .btn {
             padding: 15px 35px; font-size: 1.2rem; font-weight: bold;
-            border-radius: 50px; cursor: pointer; border: none; transition: 0.2s;
+            border-radius: 50px; cursor: pointer; border: none; outline: none;
         }
-        .btn-yes { background: linear-gradient(45deg, #ff477e, #ff7096); color: white; z-index: 5; }
-        .btn-no { background-color: #eee; color: #666; position: absolute; left: 55%; z-index: 4; }
+        .btn-yes { 
+            background: linear-gradient(45deg, #ff477e, #ff7096); color: white; 
+            box-shadow: 0 5px 15px rgba(255, 71, 126, 0.4); transition: transform 0.2s;
+        }
+        .btn-yes:hover { transform: scale(1.1); }
+        
+        /* Кнопка "Нет" с плавным и точным смещением */
+        .btn-no { 
+            background-color: #eee; color: #666; 
+            transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1); user-select: none;
+        }
 
         .love-screen { display: none; opacity: 0; }
         .love-screen.show { display: block; opacity: 1; animation: fadeIn 0.8s; }
         
         .timer-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 20px 0; }
-        .timer-item { background: #fff0f3; padding: 10px 5px; border-radius: 12px; border: 1px solid #ffc2d1; }
-        .timer-value { display: block; font-size: 1.4rem; font-weight: bold; color: #ff477e; }
-        .timer-label { font-size: 0.7rem; color: #7a7a7a; }
+        .timer-item { background: #fff0f3; padding: 12px 5px; border-radius: 14px; border: 1px solid #ffc2d1; }
+        .timer-value { display: block; font-size: 1.5rem; font-weight: bold; color: #ff477e; }
+        .timer-label { font-size: 0.75rem; color: #7a7a7a; }
 
-        .typewriter-container { color: #4a4a4a; font-size: 1rem; line-height: 1.6; margin-top: 15px; min-height: 60px; }
+        .typewriter-container { color: #4a4a4a; font-size: 1.05rem; line-height: 1.6; margin-top: 15px; min-height: 80px; }
+        
         .kiss-btn { 
-            display: none; margin: 20px auto 0; background: #ff7096; color: white; 
-            padding: 12px 20px; border-radius: 50px; border: none; cursor: pointer;
+            display: none; margin: 20px auto 0; background: linear-gradient(45deg, #ff7096, #ff85a2); color: white; 
+            padding: 14px 28px; border-radius: 50px; border: none; cursor: pointer; font-size: 1rem; font-weight: bold;
+            box-shadow: 0 4px 12px rgba(255, 112, 150, 0.3);
         }
+        .kiss-btn.success { background: #4fca5d !important; box-shadow: 0 4px 12px rgba(79, 202, 93, 0.3); cursor: default; }
+        
         @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
-        .falling-heart { position: absolute; pointer-events: none; animation: fall linear forwards; }
-        @keyframes fall { 0% { transform: translateY(-20px); opacity: 1; } 100% { transform: translateY(105vh); opacity: 0; } }
-        @keyframes explode { 0% { transform: translate(0, 0); opacity: 1; } 100% { transform: translate(var(--x), var(--y)); opacity: 0; } }
+        .falling-heart { position: absolute; pointer-events: none; z-index: 1; animation: fall linear forwards; }
+        @keyframes fall { 0% { transform: translateY(-20px) rotate(0deg); opacity: 1; } 100% { transform: translateY(105vh) rotate(360deg); opacity: 0; } }
+        @keyframes explode { 0% { transform: translate(0, 0) scale(1); opacity: 1; } 100% { transform: translate(var(--x), var(--y)) scale(0.5); opacity: 0; } }
     </style>
 </head>
 <body onclick="spawnHearts(event)">
 
     <div class="card" id="mainCard" onclick="event.stopPropagation()">
+        <!-- ЭКРАН 1: ИГРА -->
         <div class="game-screen" id="gameScreen">
             <h2 class="game-title">Макосям, ты меня любишь? 🥺</h2>
             <div class="btn-container">
@@ -62,8 +79,10 @@
             </div>
         </div>
 
+        <!-- ЭКРАН 2: СЧЕТЧИК И ПРИЗНАНИЕ -->
         <div class="love-screen" id="loveScreen">
-            <h1 style="color: #ff477e;">Мы вместе уже:</h1>
+            <div style="font-size: 3rem; color: #ff477e; animation: heartbeat 1.2s infinite; margin-bottom: 10px;">❤️</div>
+            <h1 style="color: #ff477e; font-size: 1.8rem;">Мы вместе уже:</h1>
             <div class="timer-container">
                 <div class="timer-item"><span class="timer-value" id="d">0</span><span class="timer-label">Дней</span></div>
                 <div class="timer-item"><span class="timer-value" id="h">0</span><span class="timer-label">Часов</span></div>
@@ -71,19 +90,28 @@
                 <div class="timer-item"><span class="timer-value" id="s">0</span><span class="timer-label">Секунд</span></div>
             </div>
             <div class="typewriter-container" id="textTarget"></div>
-            <button class="kiss-btn" id="kissBtn" onclick="sendKiss()">Отправить поцелуй 💋</button>
+            <button class="kiss-btn" id="kissBtn" onclick="sendKiss()">Отправить виртуальный поцелуй 💋</button>
         </div>
     </div>
 
     <script>
-        const start = new Date(2026, 1, 22); //
+        const start = new Date(2026, 1, 22); // 22 февраля 2026
         const msg = "Иногда я могу не говорить это каждый день, но я правда ценю тебя и то, что ты есть в моей жизни. Просто хотел, чтобы ты это знала и не забывала. ❤️";
 
+        // Новая безопасная функция движения кнопки "Нет"
         function moveBtn() {
             const btn = document.getElementById('noBtn');
-            const x = Math.random() * 70 - 35; // Ограничил разлет, чтобы не улетала за экран
-            const y = Math.random() * 150 - 75;
-            btn.style.transform = `translate(${x}px, ${y}px)`;
+            
+            // Генерируем смещение в диапазоне, который гарантирует, что кнопка останется в карточке, но отлетит от "Да"
+            // Используем только безопасные зоны трансформации
+            const randomX = (Math.random() - 0.5) * 160; 
+            const randomY = (Math.random() - 0.5) * 100; 
+            
+            // Если смещение слишком маленькое, искусственно увеличиваем его
+            const safeX = Math.abs(randomX) < 40 ? (randomX < 0 ? -60 : 60) : randomX;
+            const safeY = Math.abs(randomY) < 30 ? (randomY < 0 ? -50 : 50) : randomY;
+            
+            btn.style.transform = `translate(${safeX}px, ${safeY}px)`;
         }
 
         function update() {
@@ -108,21 +136,23 @@
 
         function spawnHeart() {
             const h = document.createElement('div');
-            h.className = 'falling-heart'; h.innerText = '❤️';
+            h.className = 'falling-heart'; h.innerText = ['❤️', '💖', '💝', '💕', '💗'][Math.floor(Math.random() * 5)];
             h.style.left = Math.random() * 100 + 'vw';
             h.style.fontSize = Math.random() * 20 + 15 + 'px';
             h.style.animationDuration = Math.random() * 3 + 2 + 's';
             document.body.appendChild(h);
-            setTimeout(() => h.remove(), 5000);
+            setTimeout(() => h.remove(), 4000);
         }
 
         function spawnHearts(e) {
+            const icons = ['❤️', '💖', '💋', '💕'];
             for (let i = 0; i < 6; i++) {
                 const h = document.createElement('div');
-                h.innerText = '💖'; h.style.position = 'absolute';
+                h.innerText = icons[Math.floor(Math.random() * icons.length)]; 
+                h.style.position = 'absolute'; h.style.zIndex = '5';
                 h.style.left = e.clientX + 'px'; h.style.top = e.clientY + 'px';
-                const x = (Math.random() - 0.5) * 200 + 'px';
-                const y = (Math.random() - 0.5) * 200 + 'px';
+                const x = (Math.random() - 0.5) * 150 + 'px';
+                const y = (Math.random() - 0.5) * 150 + 'px';
                 h.style.setProperty('--x', x); h.style.setProperty('--y', y);
                 h.style.animation = 'explode 0.6s forwards';
                 document.body.appendChild(h);
@@ -132,9 +162,14 @@
 
         function sendKiss() {
             const btn = document.getElementById('kissBtn');
-            btn.innerText = "Поцелуй получен! ❤️";
-            btn.style.background = "#4fca5d";
-            for (let i = 0; i < 20; i++) setTimeout(() => spawnHearts({clientX: window.innerWidth/2, clientY: window.innerHeight/2}), i * 50);
+            if (btn.classList.contains('success')) return;
+            
+            btn.classList.add('success');
+            btn.innerText = "Поцелуй получен! Люблю тебя ❤️";
+            
+            for (let i = 0; i < 25; i++) {
+                setTimeout(() => spawnHearts({clientX: window.innerWidth/2, clientY: window.innerHeight/2}), i * 40);
+            }
         }
     </script>
 </body>
