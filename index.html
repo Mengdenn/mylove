@@ -1,35 +1,195 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-<meta charset="UTF-8">
-<title>Для Айгерим ❤️</title>
-<style>
-body{
-    margin:0;
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:linear-gradient(135deg,#ff9a9e,#fad0c4);
-    font-family:Arial,sans-serif;
-}
-.box{
-    background:white;
-    padding:40px;
-    border-radius:20px;
-    text-align:center;
-    box-shadow:0 0 20px rgba(0,0,0,.2);
-}
-h1{
-    color:#ff4081;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Для Макосям ❤️</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #ffe5ec 0%, #ffc2d1 100%);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Контейнер для интерактивных элементов */
+        .card {
+            text-align: center;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 40px 30px;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(251, 111, 146, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            max-width: 90%;
+            width: 400px;
+            transition: all 0.5s ease;
+        }
+
+        /* Стили начальной кнопки */
+        .magic-btn {
+            background: linear-gradient(45deg, #ff477e, #ff7096);
+            color: white;
+            border: none;
+            padding: 18px 36px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 71, 126, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+            outline: none;
+        }
+
+        .magic-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(255, 71, 126, 0.6);
+        }
+
+        .magic-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Скрытый по умолчанию блок с признанием */
+        .love-message {
+            display: none;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .love-message.show {
+            display: block;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        h1 {
+            color: #ff477e;
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            line-height: 1.3;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+        }
+
+        p {
+            color: #4a4a4a;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .heart-icon {
+            font-size: 3.5rem;
+            color: #ff477e;
+            animation: heartbeat 1.2s infinite;
+            margin-bottom: 10px;
+        }
+
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            20% { transform: scale(1.15); }
+            40% { transform: scale(1); }
+            60% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        /* Анимация падающих сердечек */
+        .falling-heart {
+            position: absolute;
+            color: #ff7096;
+            font-size: 20px;
+            pointer-events: none;
+            z-index: 1;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-20px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(105vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
 </head>
 <body>
-<div class="box">
-    <h1>❤️ Мадина ❤️</h1>
-    <h2>Ты самая красивая девушка для меня</h2>
-    <p>И это официальный сайт, который подтверждает данный факт 😁</p>
-</div>
+
+    <div class="card" id="mainCard">
+        <!-- Кнопка, которая видна сразу -->
+        <button class="magic-btn" id="startBtn" onclick="revealLove()">Нажми на меня ✨</button>
+
+        <!-- Блок, который появится после клика -->
+        <div class="love-message" id="loveMessage">
+            <div class="heart-icon">❤️</div>
+            <h1>Я люблю тебя, Макосям!</h1>
+            <p>Ты самое дорогое, что у меня есть. Спасибо, что ты рядом! ✨</p>
+        </div>
+    </div>
+
+    <script>
+        function revealLove() {
+            const startBtn = document.getElementById('startBtn');
+            const loveMessage = document.getElementById('loveMessage');
+            
+            // Скрываем кнопку
+            startBtn.style.display = 'none';
+            
+            // Показываем блок с признанием и запускаем анимацию
+            loveMessage.classList.add('show');
+            
+            // Запускаем бесконечный дождь из сердечек
+            setInterval(createHeart, 300);
+            
+            // Сразу создаем пачку сердечек для взрывного эффекта
+            for(let i = 0; i < 15; i++) {
+                setTimeout(createHeart, i * 50);
+            }
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('falling-heart');
+            
+            // Разные виды сердечек
+            const heartTypes = ['❤️', '💖', '💝', '💕', '💗'];
+            heart.innerText = heartTypes[Math.floor(Math.random() * heartTypes.length)];
+            
+            // Случайная позиция по горизонтали
+            heart.style.left = Math.random() * 100 + 'vw';
+            
+            // Случайный размер
+            const size = Math.random() * 20 + 15;
+            heart.style.fontSize = size + 'px';
+            
+            // Случайная скорость падения
+            const duration = Math.random() * 3 + 2;
+            heart.style.animationDuration = duration + 's';
+            
+            // Немного разная прозрачность
+            heart.style.opacity = Math.random() * 0.5 + 0.5;
+            
+            document.body.appendChild(heart);
+            
+            // Удаляем сердечко после того, как оно упало, чтобы не перегружать память
+            setTimeout(() => {
+                heart.remove();
+            }, duration * 1000);
+        }
+    </script>
 </body>
 </html>
